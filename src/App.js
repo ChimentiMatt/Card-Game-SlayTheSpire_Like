@@ -37,9 +37,14 @@ function App() {
     // { id: 3, str: 3, def: 3},
   ])
   const [deck, setDeck] = useState([
-    // { id: 1, str: 1, def: 2},
-    // { id: 2, str: 2, def: 3},
-    // { id: 3, str: 3, def: 3},
+    { id: 1, str: 1, def: 2},
+    { id: 2, str: 2, def: 3},
+    { id: 3, str: 3, def: 3},
+    { id: 4, str: 3, def: 3},
+    { id: 5, str: 1, def: 2},
+    { id: 6, str: 2, def: 3},
+    { id: 7, str: 3, def: 3},
+    { id: 8, str: 3, def: 3},
   ])
 
 
@@ -50,21 +55,44 @@ function App() {
   }, [])
 
   const draw = () => {
+    if (notStateDrawPile.length === 0){
+
+      // Since there are no more cards to draw loop over deck
+      // and add card to draw pile checking to see if its already in play.
+      for (let i = 0; i < notStateDeck.length; i++){
+        // if (notStateHand[0] !== notStateDeck[i])
+        if (notStateHand.includes(notStateDeck[i])){
+          console.log(notStateHand)
+          console.log(notStateDeck[i])
+        }
+        else{
+          notStateDrawPile.push(notStateDeck[i])
+        }
+        
+
+
+      }
+    
+      // notStateDrawPile = deck
+      setDrawPile(notStateDrawPile)
+    }
+    // console.log('deck', deck)
+    // console.log('Not state draw pile', notStateDrawPile)
 
     // setCards(current => [...current,{ str: 4, def: 3},])
-    if (cardsInHand.length < 6){
+    if (notStateHand.length < 6){
       let index = Math.floor(Math.random() * (notStateDrawPile.length - 0) + 0)
       let cardToBeDrawn = notStateDrawPile[index]
       notStateDrawPile.splice(index, 1)
-      console.log(cardToBeDrawn)
+      // console.log(cardToBeDrawn)
 
 
 
 
       // setCardsInHand(current => [...current, createCard(),])
       notStateHand.push(cardToBeDrawn)
-      console.log(notStateHand)
-      
+      // console.log(notStateHand)
+
     }
 
     setDummyState(dummyState +1)
@@ -105,7 +133,9 @@ function App() {
   }
 
   const startGame = () => {
-    notStateDrawPile = notStateDeck
+    for (let i = 0; i < notStateDeck.length; i++){
+      notStateDrawPile.push(notStateDeck[i])
+    }
 
 
     for (let i = 0; i < 2; i++){
@@ -138,7 +168,8 @@ function App() {
     // console.log('discard pile object', discardPile)
     // console.log(notStateDrawPile[0])
     // console.log(drawPile)
-    console.log(cardsInHand)
+    console.log(notStateDrawPile.length)
+    console.log(notStateDrawPile)
    
   }
 
