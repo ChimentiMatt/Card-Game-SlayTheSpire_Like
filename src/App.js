@@ -56,25 +56,23 @@ function App() {
 
   const draw = () => {
     if (notStateDrawPile.length === 0){
+      alert('shuffle')
 
       // Since there are no more cards to draw loop over deck
       // and add card to draw pile checking to see if its already in play.
       for (let i = 0; i < notStateDeck.length; i++){
-        // if (notStateHand[0] !== notStateDeck[i])
         if (notStateHand.includes(notStateDeck[i])){
-          console.log(notStateHand)
-          console.log(notStateDeck[i])
+          // console.log(notStateHand)
+          // console.log(notStateDeck[i])
         }
         else{
           notStateDrawPile.push(notStateDeck[i])
         }
-        
-
-
       }
     
-      // notStateDrawPile = deck
       setDrawPile(notStateDrawPile)
+      notStateDiscardPile = []
+      setDiscardPile([])
     }
     // console.log('deck', deck)
     // console.log('Not state draw pile', notStateDrawPile)
@@ -168,8 +166,7 @@ function App() {
     // console.log('discard pile object', discardPile)
     // console.log(notStateDrawPile[0])
     // console.log(drawPile)
-    console.log(notStateDrawPile.length)
-    console.log(notStateDrawPile)
+    console.log(discardPile)
    
   }
 
