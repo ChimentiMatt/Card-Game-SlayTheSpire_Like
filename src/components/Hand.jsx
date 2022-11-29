@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 const Hand = ({card, cardsInHand, index, playCard}) => {
 
     let rotationArray = [{deg: 0, y: 0}, {deg: 0, y: 0}]
-    if (cardsInHand.length === 3) rotationArray = [{deg: 3, y: 10}, {deg: 0, y: 0}, {deg: -3, y: 10}]
+    if (cardsInHand.length === 3) rotationArray = [{deg: -3, y: 10}, {deg: 0, y: 0}, {deg: 3, y: 10}]
     else if (cardsInHand.length === 4) rotationArray = [{deg: -6, y: 15}, {deg: -2, y: 0}, {deg: 2, y: 0}, {deg: 6, y: 15}]
     else if (cardsInHand.length === 5) rotationArray = [{deg: -12, y: 30}, {deg: -6, y: 1}, {deg: 0, y: -10}, {deg: 6, y: -1}, {deg: 12, y: 30}]    
     else if (cardsInHand.length === 6) rotationArray = [{deg: -15, y: 60}, {deg: -10, y: 20}, {deg: -1, y:  1}, {deg: 1, y: 1}, {deg: 10, y: 20}, {deg: 15, y: 60}]    
@@ -34,7 +34,7 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
 
         // Find what array should be used and update the variable 
         rotationArray = [{deg: 0, y: 0}, {deg: 0, y: 0}]
-        if (cardsInHand.length === 3) rotationArray = [{deg: 3, y: 10}, {deg: 0, y: 0}, {deg: -3, y: 10}]
+        if (cardsInHand.length === 3) rotationArray = [{deg: -3, y: 10}, {deg: 0, y: 0}, {deg: 3, y: 10}]
         else if (cardsInHand.length === 4) rotationArray = [{deg: -6, y: 15}, {deg: -2, y: 0}, {deg: 2, y: 0}, {deg: 6, y: 15}]
         else if (cardsInHand.length === 5) rotationArray = [{deg: -12, y: 30}, {deg: -6, y: 1}, {deg: 0, y: -10}, {deg: 6, y: -1}, {deg: 12, y: 30}]    
         else if (cardsInHand.length === 6) rotationArray = [{deg: -15, y: 60}, {deg: -10, y: 20}, {deg: -1, y:  1}, {deg: 1, y: 1}, {deg: 10, y: 20}, {deg: 15, y: 60}]   
@@ -47,11 +47,13 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
 
 
     return (
-    <div className={`cards xxx${index}`} onClick={() => { playCard(card.str, card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
+    <div className={`cards xxx${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
         <div id={`card${index}`} className='inner-card'>
             <p>DMG: {card.str}</p>
-            {index}
-            {/* {card.def} */}
+            <p>Energy Cost: {card.energy} </p>
+          
+            {card.shield !== 0 && <p>shield: {card.shield}</p>}
+           
             <p>id: {card.id}</p>
         </div>
     </div>

@@ -11,14 +11,14 @@ let notStateDiscardPile = []
 let notStateDrawPile = []
 let notStateHand = []
 let notStateDeck = [
-    { id: 1, str: 1, def: 2},
-    { id: 2, str: 2, def: 3},
-    { id: 3, str: 3, def: 3},
-    { id: 4, str: 3, def: 3},
-    { id: 5, str: 1, def: 2},
-    { id: 6, str: 2, def: 3},
-    { id: 7, str: 3, def: 3},
-    { id: 8, str: 3, def: 3},
+  { id: 1, str: 3, shield: 0, energy: 3},
+  { id: 2, str: 1, shield: 0, energy: 0},
+  { id: 3, str: 1, shield: 1, energy: 2},
+  { id: 4, str: 1, shield: 0, energy: 1},
+  { id: 5, str: 2, shield: 2, energy: 2},
+  { id: 6, str: 2, shield: 0, energy: 2},
+  { id: 7, str: 3, shield: 3, energy: 5},
+  { id: 8, str: 3, shield: 1, energy: 3},
 ]
 
 function App() {
@@ -31,7 +31,8 @@ function App() {
   
   // const [uuid, setUuid] = useState(10)
   const [health, setHealth] = useState(20)
-  const [energy, setEnergy] = useState(2)
+  const [energy, setEnergy] = useState(3)
+  const [shield, setShield] = useState(0)
 
 
   const [discardPile, setDiscardPile] = useState([])
@@ -42,24 +43,31 @@ function App() {
     // { id: 3, str: 3, def: 3},
   ])
   const [deck, setDeck] = useState([
-    { id: 1, str: 1, def: 2},
-    { id: 2, str: 2, def: 3},
-    { id: 3, str: 3, def: 3},
-    { id: 4, str: 3, def: 3},
-    { id: 5, str: 1, def: 2},
-    { id: 6, str: 2, def: 3},
-    { id: 7, str: 3, def: 3},
-    { id: 8, str: 3, def: 3},
+
   ])
 
 
-  const [creatureObj, setCreatureObj] = useState({hp: 20})
+  const [creatureObj, setCreatureObj] = useState({hp: 20, dmg: 3})
 
   useEffect(() => {
     // startGame()
   }, [])
 
-  const draw = () => {
+
+
+  const endTurn = () => {
+    // take damage
+    setHealth(health + shield - creatureObj.dmg)
+
+    // regain energy (has a max of 5)
+    if (energy + 2 < 5){
+      setEnergy(energy + 2)
+    }
+    else{
+      setEnergy(5)
+    }
+      
+
     if (notStateDrawPile.length === 0){
       // alert('shuffle')
 
@@ -103,30 +111,41 @@ function App() {
 
   }
 
-  const playCard = (damage, card, index) => {
+  const playCard = (card, index) => {
+    if (card.energy > energy){
+      alert('need more energy')
+    }
+    else{
+      setEnergy(energy - card.energy)
 
+      console.log(card.shield)
+      setShield(card.shield)
 
-    const calcDamage = creatureObj.hp - damage
-    setCreatureObj(current => {
-      return {...current, hp: calcDamage}
-    })
-
-    // Remove Card from hand
-    // setCardsInHand(current => 
-    //   current.filter(element => {
-    //     return element.id !== card.id
-    // }))
-    // console.log(notStateHand)
-    notStateHand.splice(index, 1)
-
-    // Add the card object to Discard Pile array
-    // setDiscardPile([...discardPile,{id:card.id, str: card.str}])
-    notStateDiscardPile.push({id: card.id, str: card.str})
-
-    setCardsInHand(notStateHand)
-    setDiscardPile(notStateDiscardPile)
-
+      
+      const calcDamage = creatureObj.hp - card.str
+      setCreatureObj(current => {
+        return {...current, hp: calcDamage}
+      })
+      
+      // Remove Card from hand
+      // setCardsInHand(current => 
+      //   current.filter(element => {
+        //     return element.id !== card.id
+        // }))
+        // console.log(notStateHand)
+        notStateHand.splice(index, 1)
+        
+        // Add the card object to Discard Pile array
+        // setDiscardPile([...discardPile,{id:card.id, str: card.str}])
+        notStateDiscardPile.push({id: card.id, str: card.str})
+        
+        setCardsInHand(notStateHand)
+        setDiscardPile(notStateDiscardPile)
+        
+        
+      }
   }
+
 
 
   const startGame = () => {
@@ -193,13 +212,14 @@ function App() {
           }
         </div> 
 
-        <div id='health-and-energy-container'>
+        <div id='health-and-energy-container' className='font-bold'>
           <div id='health'>{health}</div>
           <div id='energy'>{energy}</div>
+          {shield !== 0 && <p>shield:{shield}</p>}
           
         </div>
         <div className='absolute bottom-[4rem] right-[10rem]'>
-          <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={draw}>End Turn</button>
+          <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={endTurn}>End Turn</button>
         </div>
       </div>}
     
