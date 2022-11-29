@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import PreGameScreen from './components/PreGameScreen'
 import Hand from './components/Hand'
 import Creature from './components/Creature'
 import DeckScreen from './components/DeckScreen'
 import './styles.css'
+import DrawPileScreen from './components/DrawPileScreen'
 
 let notStateDiscardPile = []
 let notStateDrawPile = []
@@ -19,12 +21,14 @@ let notStateDeck = [
 ]
 
 function App() {
+  const [gameStart, setGameStart] = useState(false)
+  const [showDeck, setShowDeck] = useState(false)
+  const [showDrawPile, setShowDrawPile] = useState(false)
   
 
   const [dummyState, setDummyState] = useState(0) 
   
   const [uuid, setUuid] = useState(10)
-  const [showDeck, setShowDeck] = useState(false)
   const [health, setHealth] = useState(20)
   const [energy, setEnergy] = useState(2)
 
@@ -156,9 +160,6 @@ function App() {
   }
 
 
-  const showDrawPile = () => {
-    console.log(drawPile)
-  }
 
 
 
@@ -173,33 +174,39 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={testFunc}>TEST</button>
-      <button onClick={startGame}>Start Game</button>
-      
-      <button onClick={draw}>Draw</button>
-      <button onClick={() => setShowDeck(!showDeck)}>Deck</button>
-      <button onClick={() => showDrawPile()}>Show Draw Pile</button>
-      <p>toggle: {showDeck}</p>
-      {showDeck && <DeckScreen deck={deck}/>}
-      
-      <div id='discard-pile'>{discardPile.length}</div>
+      {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame}/>}
+      {gameStart && <div>
+        <button onClick={draw}>Draw</button>
+        <div></div>
+        
+        
+        <button onClick={testFunc}>TEST</button>
+        <button onClick={() => setShowDeck(!showDeck)}>Show Deck</button>
 
-      <Creature creatureObj={creatureObj} setCreatureObj={setCreatureObj}/>
+        <DrawPileScreen drawPile={drawPile} showDrawPile={showDrawPile} setShowDrawPile={setShowDrawPile} />
+
+        {showDeck && <DeckScreen deck={deck}/>}
+        
+        <div id='discard-pile'>{discardPile.length}</div>
+
+        <Creature creatureObj={creatureObj} setCreatureObj={setCreatureObj}/>
 
 
-      <div id="card-container">
-        {cardsInHand.map((card, index) => (
-          <Hand key={index} card={card} cardsInHand={cardsInHand} index={index} playCard={playCard} />
-          ))
-        }
-      </div> 
+        <div id="card-container">
+          {cardsInHand.map((card, index) => (
+            <Hand key={index} card={card} cardsInHand={cardsInHand} index={index} playCard={playCard} />
+            ))
+          }
+        </div> 
+
+        <div id='health-and-energy-container'>
+          <div id='health'>{health}</div>
+          <div id='energy'>{energy}</div>
+          {/* {uuid} */}
+        </div>
+      </div>}
     
 
-      <div id='health-and-energy-container'>
-        <div id='health'>{health}</div>
-        <div id='energy'>{energy}</div>
-        {/* {uuid} */}
-      </div>
     </div>
   );
 }

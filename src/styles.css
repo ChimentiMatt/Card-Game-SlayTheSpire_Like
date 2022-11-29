@@ -75,7 +75,6 @@
     gap: 1rem;
 }
 
-
 #health{
     display: flex;
     justify-content: center;
@@ -111,7 +110,6 @@
     background-color: white;
 }
 
-
 .deck-cards{
     height: 15rem;
     width: 10rem;
@@ -120,4 +118,16 @@
     border-radius: 3px;
     position: relative;
     z-index: 1;
+}
+
+#drawPileScreen{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 5vh;
+    margin-left: 5vw;
+    width: 90vw;
+    height: 90vh;
+    background-color: white;
+    z-index: 10;
 }
