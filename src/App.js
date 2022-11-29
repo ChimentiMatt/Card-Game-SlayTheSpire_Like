@@ -6,6 +6,7 @@ import Creature from './components/Creature'
 import DeckScreen from './components/DeckScreen'
 import './styles.css'
 import DrawPileScreen from './components/DrawPileScreen'
+import PostBattleScreen from './components/PostBattleScreen'
 
 let notStateDiscardPile = []
 let notStateDrawPile = []
@@ -23,6 +24,7 @@ let notStateDeck = [
 
 function App() {
   const [gameStart, setGameStart] = useState(false)
+  const [postBattle, setPostBattle] = useState(false)
   const [showDeck, setShowDeck] = useState(false)
   const [showDrawPile, setShowDrawPile] = useState(false)
   
@@ -47,7 +49,7 @@ function App() {
   ])
 
 
-  const [creatureObj, setCreatureObj] = useState({hp: 20, dmg: 3})
+  const [creatureObj, setCreatureObj] = useState({hp: 5, dmg: 3})
 
   useEffect(() => {
     // startGame()
@@ -112,19 +114,35 @@ function App() {
   }
 
   const playCard = (card, index) => {
+    // if not enough energy
     if (card.energy > energy){
-      alert('need more energy')
+      // alert('need more energy')
     }
+    // if energy check passed
     else{
       setEnergy(energy - card.energy)
 
-      console.log(card.shield)
       setShield(card.shield)
 
       
-      const calcDamage = creatureObj.hp - card.str
+      let heroTL = gsap.timeline({repeat: 0});
+      heroTL.to('#hero', {rotate: '50deg', x: '2rem'})
+      heroTL.to('#hero', {rotate: '0deg', x :'0'})
+      
+      let creatureTL = gsap.timeline({repeat: 0});
+      creatureTL.to('#creature', {delay: .4, duration: .1, x: '1rem'})
+      creatureTL.to('#creature', { duration: .1, x: '-1rem'})
+      creatureTL.to('#creature', { duration: .1, x: '1rem'})
+      creatureTL.to('#creature', { duration: .1, x: '-1rem'})
+      
+      let clickCardTl = gsap.timeline({repeat: 0})
+      clickCardTl.to('.cards', {pointerEvents: "none"})
+      clickCardTl.to('.cards', {delay: 1, pointerEvents: "auto"})
+
+      const calcRemainingHP = creatureObj.hp - card.str
+
       setCreatureObj(current => {
-        return {...current, hp: calcDamage}
+        return {...current, hp: calcRemainingHP}
       })
       
       // Remove Card from hand
@@ -142,9 +160,14 @@ function App() {
         setCardsInHand(notStateHand)
         setDiscardPile(notStateDiscardPile)
         
-        
+        if (calcRemainingHP <= 0){
+          alert('felled')
+          setPostBattle(true)
+        }
       }
   }
+
+
 
 
 
@@ -189,10 +212,10 @@ function App() {
   return (
     <div className="App">
       {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame}/>}
-      {gameStart && <div>
-        <div></div>
-        
-        
+      {postBattle && <PostBattleScreen setPostBattle={setPostBattle}/>}
+      {gameStart && 
+        <div>
+
         {/* <button onClick={testFunc}>TEST</button> */}
         <button onClick={() => setShowDeck(!showDeck)}>Show Deck</button>
 
@@ -203,6 +226,7 @@ function App() {
         <div id='discard-pile'>{discardPile.length}</div>
 
         <Creature creatureObj={creatureObj} setCreatureObj={setCreatureObj}/>
+        <div id='hero' className='fixed top-[40vh] left-[40vw] h-[5rem] w-[5rem] bg-slate-200'>Hero</div>
 
 
         <div id="card-container">
