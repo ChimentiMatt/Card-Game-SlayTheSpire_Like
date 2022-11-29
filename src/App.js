@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import gsap from 'gsap'
 import PreGameScreen from './components/PreGameScreen'
 import Hand from './components/Hand'
 import Creature from './components/Creature'
@@ -28,7 +29,7 @@ function App() {
 
   const [dummyState, setDummyState] = useState(0) 
   
-  const [uuid, setUuid] = useState(10)
+  // const [uuid, setUuid] = useState(10)
   const [health, setHealth] = useState(20)
   const [energy, setEnergy] = useState(2)
 
@@ -60,7 +61,7 @@ function App() {
 
   const draw = () => {
     if (notStateDrawPile.length === 0){
-      alert('shuffle')
+      // alert('shuffle')
 
       // Since there are no more cards to draw loop over deck
       // and add card to draw pile checking to see if its already in play.
@@ -104,6 +105,7 @@ function App() {
 
   const playCard = (damage, card, index) => {
 
+
     const calcDamage = creatureObj.hp - damage
     setCreatureObj(current => {
       return {...current, hp: calcDamage}
@@ -126,13 +128,6 @@ function App() {
 
   }
 
-  const createCard = () =>{
-    const str = Math.floor(Math.random() * (6 - 1) + 1)
-    const def = Math.floor(Math.random() * (6 - 1) + 1)
-
-    setUuid(uuid + 1)
-    return { id: uuid, str: str, def: def}
-  }
 
   const startGame = () => {
     for (let i = 0; i < notStateDeck.length; i++){
@@ -176,11 +171,10 @@ function App() {
     <div className="App">
       {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame}/>}
       {gameStart && <div>
-        <button onClick={draw}>Draw</button>
         <div></div>
         
         
-        <button onClick={testFunc}>TEST</button>
+        {/* <button onClick={testFunc}>TEST</button> */}
         <button onClick={() => setShowDeck(!showDeck)}>Show Deck</button>
 
         <DrawPileScreen drawPile={drawPile} showDrawPile={showDrawPile} setShowDrawPile={setShowDrawPile} />
@@ -202,7 +196,10 @@ function App() {
         <div id='health-and-energy-container'>
           <div id='health'>{health}</div>
           <div id='energy'>{energy}</div>
-          {/* {uuid} */}
+          
+        </div>
+        <div className='absolute bottom-[4rem] right-[10rem]'>
+          <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={draw}>End Turn</button>
         </div>
       </div>}
     

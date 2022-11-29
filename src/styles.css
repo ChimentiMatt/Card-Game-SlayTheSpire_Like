@@ -26,10 +26,9 @@
 
 
 
-.card{
+.cards{
     height: 15rem;
     width: 10rem;
-    /* border: 2px solid black; */
     border-radius: 3px;
     position: relative;
     z-index: 1;
