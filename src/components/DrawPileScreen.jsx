@@ -3,7 +3,7 @@
 const DrawPileScreen = ({drawPile, showDrawPile, setShowDrawPile}) => {
   return (
     <div>
-        <button onClick={() => setShowDrawPile(!showDrawPile)}>Show Draw Pile</button>
+        <button onClick={() => setShowDrawPile(!showDrawPile)}>Draw Pile</button>
         {showDrawPile && 
         <div id='drawPileScreen'>
 
