@@ -26,7 +26,7 @@
 
 
 
-.cards{
+.handCardOuter{
     height: 15rem;
     width: 10rem;
     border-radius: 3px;
@@ -129,4 +129,20 @@
     height: 90vh;
     background-color: white;
     z-index: 10;
+}
+
+
+
+
+/*  */
+
+.cards{
+
+    background-color: wheat;
+    height: 15rem;
+    width: 10rem;
+    border: 2px solid black;
+    border-radius: 3px;
+    position: relative;
+    z-index: 2;
 }

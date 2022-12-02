@@ -47,8 +47,8 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
 
 
     return (
-    <div className={`cards xxx${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
-        <div id={`card${index}`} className='inner-card'>
+    <div className={`handCardOuter xxx${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
+        <div id={`card${index}`} className='cards'>
             <p>DMG: {card.str}</p>
             <p>Energy Cost: {card.energy} </p>
           

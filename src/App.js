@@ -23,12 +23,15 @@ let notStateDeck = [
   { id: 8, str: 3, shield: 1, energy: 3},
 ]
 
+
 function App() {
   const [gameStart, setGameStart] = useState(false)
   const [postBattle, setPostBattle] = useState(false)
   const [showDeck, setShowDeck] = useState(false)
   const [showDrawPile, setShowDrawPile] = useState(false)
   
+  const [drawableCards, setDrawableCards] = useState([{id: null, str: 5, energy: 1}, {id: null, str: 7, energy: 2}, {id: null, str: 1, energy: 0}])
+  // const drawableCards = [{id: null, str: 5, shield: 0, energy: 1}, {id: null, str: 7, shield: 0, energy: 2}, {id: null, str: 1, shield: 0, energy: 0}]
 
   const [dummyState, setDummyState] = useState(0) 
 
@@ -47,9 +50,7 @@ function App() {
     // { id: 2, str: 2, def: 3},
     // { id: 3, str: 3, def: 3},
   ])
-  const [deck, setDeck] = useState([
-
-  ])
+  const [deck, setDeck] = useState([])
 
 
   const [creatureObj, setCreatureObj] = useState({health: 5, dmg: 3})
@@ -173,9 +174,6 @@ function App() {
   }
 
 
-
-
-
   const startGame = () => {
     for (let i = 0; i < notStateDeck.length; i++){
       notStateDrawPile.push(notStateDeck[i])
@@ -210,15 +208,24 @@ function App() {
 
 
 
-  const testFunc = () => {
-    console.log(discardPile)
+  function reducer(state,action){
+    if (action.type === 'add'){
+      return {
+        moneys: state.moneys + 1
+      }
+    }
+    throw Error('Unknown action.');
   }
+  
+
 
 
   return (
     <div className="App">
+
+
       {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame}/>}
-      {postBattle && <PostBattleScreen nextEncounter={nextEncounter}/>}
+      {postBattle && <PostBattleScreen nextEncounter={nextEncounter} drawableCards={drawableCards}/>}
       <Header playerObject={playerObject} deck={deck} showDeck={showDeck} setShowDeck={setShowDeck}/>
       {gameStart && 
         <div>
