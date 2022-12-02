@@ -20,11 +20,11 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
         // if hover 
         if (onOrOFf){
              gsap.to(`#card${index}`, {duration: .0, rotate: '0deg', zoom: 1.75, y: '-7rem', x: '-3rem'})
-             gsap.to(`.xxx${index}`, {duration: .0, rotate: `${hoverOffset}deg`})
+             gsap.to(`.outerIndex${index}`, {duration: .0, rotate: `${hoverOffset}deg`})
             }
         else {
             gsap.to(`#card${index}`, {duration: 0, zoom: 1, y: '0rem', x: '0rem'})
-            gsap.to(`.xxx${index}`, {duration: 0, rotate: `${offsetRotate}deg`})
+            gsap.to(`.outerIndex${index}`, {duration: 0, rotate: `${offsetRotate}deg`})
         }
     }   
 
@@ -40,15 +40,18 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
         else if (cardsInHand.length === 6) rotationArray = [{deg: -15, y: 60}, {deg: -10, y: 20}, {deg: -1, y:  1}, {deg: 1, y: 1}, {deg: 10, y: 20}, {deg: 15, y: 60}]   
 
         // rotate all cards according to the array
-        for (let i = 0; i < rotationArray.length; i++){
-            gsap.to(`.xxx${i}`, {duration: 0, rotate: `${rotationArray[i].deg}deg`, top:  `${rotationArray[i].y}px`})
+        if (cardsInHand.length > 1){
+            for (let i = 0; i < rotationArray.length; i++){
+                gsap.to(`.outerIndex${i}`, {duration: 0, rotate: `${rotationArray[i].deg}deg`, top:  `${rotationArray[i].y}px`})
+            }
         }
     }
 
 
     return (
-    <div className={`handCardOuter xxx${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
+    <div className={`handCardOuter outerIndex${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
         <div id={`card${index}`} className='cards'>
+            {index}
             <p>DMG: {card.str}</p>
             <p>Energy Cost: {card.energy} </p>
           

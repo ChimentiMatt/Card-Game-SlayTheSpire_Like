@@ -23,10 +23,10 @@ let notStateDeck = [
   { id: 8, str: 3, shield: 1, energy: 3},
 ]
 
-
 function App() {
   const [gameStart, setGameStart] = useState(false)
   const [postBattle, setPostBattle] = useState(false)
+
   const [showDeck, setShowDeck] = useState(false)
   const [showDrawPile, setShowDrawPile] = useState(false)
   
@@ -37,7 +37,7 @@ function App() {
 
   const [playerObject, setPlayerObject] = useState({health: 20, energy: 30, shield: 0, gold: 0})
   
-  // const [uuid, setUuid] = useState(10)
+  const [uuid, setUuid] = useState(100)
   const [health, setHealth] = useState(20)
   const [energy, setEnergy] = useState(3)
   const [shield, setShield] = useState(0)
@@ -67,7 +67,6 @@ function App() {
       return {...current, health: health + shield - creatureObj.dmg}
     })
     
-
     // regain energy (has a max of 5)
     if (energy + 2 < 5){
       setEnergy(energy + 2)
@@ -222,17 +221,16 @@ function App() {
 
   return (
     <div className="App">
+      {uuid}
 
-
-      {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame}/>}
-      {postBattle && <PostBattleScreen nextEncounter={nextEncounter} drawableCards={drawableCards}/>}
+      {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame} />}
+      {postBattle && <PostBattleScreen nextEncounter={nextEncounter} drawableCards={drawableCards} cardsInHand={cardsInHand} setCardsInHand={setCardsInHand} uuid={uuid} setUuid={setUuid} />}
       <Header playerObject={playerObject} deck={deck} showDeck={showDeck} setShowDeck={setShowDeck}/>
       {gameStart && 
         <div>
 
         {/* <button onClick={testFunc}>TEST</button> */}
     
-
         <DrawPileScreen drawPile={drawPile} showDrawPile={showDrawPile} setShowDrawPile={setShowDrawPile} />
 
         {showDeck && <DeckScreen deck={deck}/>}
@@ -241,7 +239,6 @@ function App() {
 
         <Creature creatureObj={creatureObj} setCreatureObj={setCreatureObj}/>
         <div id='hero' className='fixed top-[40vh] left-[40vw] h-[5rem] w-[5rem] bg-slate-200'>Hero</div>
-
 
         <div id="card-container">
           {cardsInHand.map((card, index) => (

@@ -1,35 +1,52 @@
 import { useState, useEffect } from "react"
-const PostBattleScreen = ({nextEncounter, drawableCards}) => {
+const PostBattleScreen = ({nextEncounter, drawableCards, cardsInHand, setCardsInHand, uuid, setUuid }) => {
   const [choiceOne, setChoiceOne] = useState({})
   const [choiceTwo, setChoiceTwo] = useState({})
   const [choiceThree, setChoiceThree] = useState({})
+  
   useEffect(()=> {
+    let copyUuid = uuid
  
     const copyOfDrawableCards = []
 
     // Non state influenced copy of array being made
     for (let i = 0; i < drawableCards.length; i++){
+      copyUuid++
+      drawableCards[i].id = copyUuid
       copyOfDrawableCards.push(drawableCards[i])
     }
-
+    setUuid(uuid + 3)
 
     let randomIndex =  Math.floor(Math.random() * (copyOfDrawableCards.length - 0) ) + 0
-
+   
     setChoiceOne(copyOfDrawableCards[randomIndex])
-    console.log(copyOfDrawableCards)
+
 
     copyOfDrawableCards.splice(randomIndex, 1)
     randomIndex = Math.floor(Math.random() * (copyOfDrawableCards.length - 0) ) + 0
-    console.log(copyOfDrawableCards)
+
 
     setChoiceTwo(copyOfDrawableCards[randomIndex])
     copyOfDrawableCards.splice(randomIndex, 1)
     randomIndex = Math.floor(Math.random() * (copyOfDrawableCards.length - 0) ) + 0
-    console.log(copyOfDrawableCards)
+
 
     setChoiceThree(copyOfDrawableCards[randomIndex])
-    console.log(copyOfDrawableCards)
+ 
   }, [])
+
+  const addCardToHand = (card) =>{
+    if (card === '1') {
+      console.log('cih', cardsInHand)
+      setCardsInHand([...cardsInHand, choiceThree])
+    }
+    else if (card === '2') {
+      setCardsInHand()
+    }
+    else if (card === '3') {
+      setCardsInHand()
+    }
+  }
 
 
   return (
@@ -37,20 +54,20 @@ const PostBattleScreen = ({nextEncounter, drawableCards}) => {
       <h1>Choose your card</h1>
       <div className="flex gap-[1rem] ">
 
-        <div className="cards">
+        <div className="cards" onClick={() => addCardToHand('1')}>
           <p>{choiceOne.str}</p>
           <p>{choiceOne.energy}</p>
           <p>{choiceOne.shield}</p>
         </div>
 
-        <div className="cards">
+        <div className="cards" onClick={() => addCardToHand('2')}>
 
           <p>{choiceTwo.str}</p>
           <p>{choiceTwo.energy}</p>
           <p>{choiceTwo.shield}</p>
         </div>
 
-        <div className="cards">
+        <div className="cards" onClick={() => addCardToHand('3')}>
           <p>{choiceThree.str}</p>
           <p>{choiceThree.energy}</p>
           <p>{choiceThree.shield}</p>
