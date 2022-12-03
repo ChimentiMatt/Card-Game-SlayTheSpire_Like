@@ -37,14 +37,16 @@ const PostBattleScreen = ({nextEncounter, drawableCards, cardsInHand, setCardsIn
 
   const addCardToHand = (card) =>{
     if (card === '1') {
-      console.log('cih', cardsInHand)
-      setCardsInHand([...cardsInHand, choiceThree])
+      setCardsInHand([...cardsInHand, choiceOne])
+      nextEncounter()
     }
     else if (card === '2') {
-      setCardsInHand()
+      setCardsInHand([...cardsInHand, choiceTwo])
+      nextEncounter()
     }
     else if (card === '3') {
-      setCardsInHand()
+      setCardsInHand([...cardsInHand, choiceThree])
+      nextEncounter()
     }
   }
 

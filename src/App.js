@@ -52,8 +52,9 @@ function App() {
   ])
   const [deck, setDeck] = useState([])
 
-
-  const [creatureObj, setCreatureObj] = useState({health: 5, dmg: 3})
+  const [currentCreatureIndex, setCurrentCreatureIndex] = useState(0)
+  const [creatureArray, setCreatureArray ] = useState([{health: 5, dmg: 3}, {health: 7, dmg: 6}])
+  const [creatureObj, setCreatureObj] = useState()
 
   useEffect(() => {
     // startGame()
@@ -104,9 +105,6 @@ function App() {
       let cardToBeDrawn = notStateDrawPile[index]
       notStateDrawPile.splice(index, 1)
       // console.log(cardToBeDrawn)
-
-
-
 
       // setCardsInHand(current => [...current, createCard(),])
       notStateHand.push(cardToBeDrawn)
@@ -196,26 +194,19 @@ function App() {
     setCardsInHand(notStateHand)
     setDrawPile(notStateDrawPile)
     setDeck(notStateDeck)
+
+    setCreatureObj(creatureArray[currentCreatureIndex])
+    setCurrentCreatureIndex(currentCreatureIndex +1)
   }
 
   const nextEncounter = () => {
     setPostBattle(false)
-    setCreatureObj({health: 9, dmg: 2})
-
+    setCreatureObj(creatureArray[currentCreatureIndex])
+    setCurrentCreatureIndex(currentCreatureIndex +1)
   }
 
 
 
-
-  function reducer(state,action){
-    if (action.type === 'add'){
-      return {
-        moneys: state.moneys + 1
-      }
-    }
-    throw Error('Unknown action.');
-  }
-  
 
 
 
