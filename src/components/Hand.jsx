@@ -13,7 +13,6 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
         rotateCards()
     }, [])
     
-
     const hoverZoom = (index, onOrOFf, offsetRotate) => {
         // find the offset of rotation so cards can be upright on hover with no rotation
         let hoverOffset = offsetRotate - offsetRotate

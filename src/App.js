@@ -8,6 +8,7 @@ import Creature from './components/Creature'
 import DeckScreen from './components/DeckScreen'
 import DrawPileScreen from './components/DrawPileScreen'
 import PostBattleScreen from './components/PostBattleScreen'
+import PathScreen from './components/PathScreen'
 
 let notStateDiscardPile = []
 let notStateDrawPile = []
@@ -26,6 +27,7 @@ let notStateDeck = [
 function App() {
   const [gameStart, setGameStart] = useState(false)
   const [postBattle, setPostBattle] = useState(false)
+  const [pathScreen, setPathScreen] = useState(false)
 
   const [showDeck, setShowDeck] = useState(false)
   const [showDrawPile, setShowDrawPile] = useState(false)
@@ -35,12 +37,12 @@ function App() {
 
   const [dummyState, setDummyState] = useState(0) 
 
-  const [playerObject, setPlayerObject] = useState({health: 20, energy: 30, shield: 0, gold: 0})
+  const [playerObject, setPlayerObject] = useState({health: 20, energy: 30, shield: 10, gold: 0})
   
   const [uuid, setUuid] = useState(100)
-  const [health, setHealth] = useState(20)
-  const [energy, setEnergy] = useState(3)
-  const [shield, setShield] = useState(0)
+  // const [health, setHealth] = useState(20)
+  // const [energy, setEnergy] = useState(3)
+  // const [shield, setShield] = useState(0)
 
 
   const [discardPile, setDiscardPile] = useState([])
@@ -60,23 +62,24 @@ function App() {
     // startGame()
   }, [])
 
-
-
   const endTurn = () => {
+
     // take damage
     setPlayerObject(current => {
-      return {...current, health: health + shield - creatureObj.dmg}
+      return {...current, health: playerObject.health + playerObject.shield - creatureObj.dmg}
     })
     
-    // regain energy (has a max of 5)
-    if (energy + 2 < 5){
-      setEnergy(energy + 2)
-    }
-    else{
-      setEnergy(5)
-    }
-      
+    // regain energy (has a max of 5) 100 for testing
+    if (playerObject.energy + 2 < 100){
 
+      setPlayerObject({health: 20, energy: playerObject.energy + 2, shield: 0, gold: 0})
+    }
+    // else is disabled during testing
+    // else{
+    //   setPlayerObject({health: 20, energy: 5, shield: 0, gold: 0})
+    // }
+      
+    // if draw pile is empty, shuffle 
     if (notStateDrawPile.length === 0){
       // alert('shuffle')
 
@@ -84,8 +87,6 @@ function App() {
       // and add card to draw pile checking to see if its already in play.
       for (let i = 0; i < notStateDeck.length; i++){
         if (notStateHand.includes(notStateDeck[i])){
-          // console.log(notStateHand)
-          // console.log(notStateDeck[i])
         }
         else{
           notStateDrawPile.push(notStateDeck[i])
@@ -100,6 +101,8 @@ function App() {
     // console.log('Not state draw pile', notStateDrawPile)
 
     // setCards(current => [...current,{ str: 4, def: 3},])
+
+    // if hand has less than 6 cards, draw a card
     if (notStateHand.length < 6){
       let index = Math.floor(Math.random() * (notStateDrawPile.length - 0) + 0)
       let cardToBeDrawn = notStateDrawPile[index]
@@ -112,21 +115,22 @@ function App() {
 
     }
 
-    setDummyState(dummyState +1)
+    // setDummyState(dummyState +1)
     setCardsInHand(notStateHand)
 
   }
 
   const playCard = (card, index) => {
     // if not enough energy
-    if (card.energy > energy){
+    if (card.energy > playerObject.energy){
       // alert('need more energy')
     }
     // if energy check passed
     else{
-      setEnergy(energy - card.energy)
+      // change energy and shield
+      setPlayerObject({health: 20, energy: playerObject.energy - card.energy, shield: card.shield, gold: 0})
 
-      setShield(card.shield)
+
 
       
       let heroTL = gsap.timeline({repeat: 0});
@@ -200,54 +204,68 @@ function App() {
   }
 
   const nextEncounter = () => {
-    setPostBattle(false)
+    // used to resolve after rounds as a component updates the state hand, but the non state is behind
+    notStateHand = []
+    for (let i = 0; i < cardsInHand.length; i++){
+      notStateHand.push(cardsInHand[i])
+      console.log(cardsInHand[i])
+    }
+
+    // setPostBattle(false)
+    // nextEncounter(false)
+    setPathScreen(false)
     setCreatureObj(creatureArray[currentCreatureIndex])
     setCurrentCreatureIndex(currentCreatureIndex +1)
   }
 
 
-
+  const testFunc = () =>{
+    console.log('not stand hand',notStateHand)
+    console.log('state hand',cardsInHand )
+  }
 
 
 
   return (
     <div className="App">
-      {uuid}
+  
 
       {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame} />}
-      {postBattle && <PostBattleScreen nextEncounter={nextEncounter} drawableCards={drawableCards} cardsInHand={cardsInHand} setCardsInHand={setCardsInHand} uuid={uuid} setUuid={setUuid} />}
+      {postBattle && <PostBattleScreen setPathScreen={setPathScreen} setPostBattle={setPostBattle} drawableCards={drawableCards} cardsInHand={cardsInHand} setCardsInHand={setCardsInHand} />}
       <Header playerObject={playerObject} deck={deck} showDeck={showDeck} setShowDeck={setShowDeck}/>
+      {pathScreen && <PathScreen nextEncounter={nextEncounter} /> }
       {gameStart && 
-        <div>
+          <div>
 
-        {/* <button onClick={testFunc}>TEST</button> */}
-    
-        <DrawPileScreen drawPile={drawPile} showDrawPile={showDrawPile} setShowDrawPile={setShowDrawPile} />
+          <button onClick={testFunc}>TEST</button>
+      
+          <DrawPileScreen drawPile={drawPile} showDrawPile={showDrawPile} setShowDrawPile={setShowDrawPile} />
 
-        {showDeck && <DeckScreen deck={deck}/>}
-        
-        <div id='discard-pile'>{discardPile.length}</div>
-
-        <Creature creatureObj={creatureObj} setCreatureObj={setCreatureObj}/>
-        <div id='hero' className='fixed top-[40vh] left-[40vw] h-[5rem] w-[5rem] bg-slate-200'>Hero</div>
-
-        <div id="card-container">
-          {cardsInHand.map((card, index) => (
-            <Hand key={index} card={card} cardsInHand={cardsInHand} index={index} playCard={playCard} />
-            ))
-          }
-        </div> 
-
-        <div id='health-and-energy-container' className='font-bold'>
-          <div id='health'>{playerObject.health}</div>
-          <div id='energy'>{energy}</div>
-          {shield !== 0 && <p>shield:{shield}</p>}
+          {showDeck && <DeckScreen deck={deck}/>}
           
+          <div id='discard-pile'>{discardPile.length}</div>
+
+          <Creature creatureObj={creatureObj} setCreatureObj={setCreatureObj}/>
+          <div id='hero' className='fixed top-[40vh] left-[40vw] h-[5rem] w-[5rem] bg-slate-200'>Hero</div>
+
+          <div id="card-container">
+            {cardsInHand.map((card, index) => (
+              <Hand key={index} card={card} cardsInHand={cardsInHand} index={index} playCard={playCard} />
+              ))
+            }
+          </div> 
+
+          <div id='health-and-energy-container' className='font-bold'>
+            <div id='health'>{playerObject.health}</div>
+            <div id='energy'>{playerObject.energy}</div>
+            {playerObject.shield !== 0 && <p>shield:{playerObject.shield}</p>}
+            
+          </div>
+          <div className='absolute bottom-[4rem] right-[10rem]'>
+            <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={endTurn}>End Turn</button>
+          </div>
         </div>
-        <div className='absolute bottom-[4rem] right-[10rem]'>
-          <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={endTurn}>End Turn</button>
-        </div>
-      </div>}
+      }
     
 
     </div>

@@ -1,30 +1,28 @@
 import { useState, useEffect } from "react"
-const PostBattleScreen = ({nextEncounter, drawableCards, cardsInHand, setCardsInHand, uuid, setUuid }) => {
+import uuid from 'react-uuid';
+
+const PostBattleScreen = ({setPathScreen, setPostBattle, drawableCards, cardsInHand, setCardsInHand}) => {
   const [choiceOne, setChoiceOne] = useState({})
   const [choiceTwo, setChoiceTwo] = useState({})
   const [choiceThree, setChoiceThree] = useState({})
   
-  useEffect(()=> {
-    let copyUuid = uuid
- 
+  useEffect(() => {
     const copyOfDrawableCards = []
 
     // Non state influenced copy of array being made
     for (let i = 0; i < drawableCards.length; i++){
-      copyUuid++
-      drawableCards[i].id = copyUuid
+
+      drawableCards[i].id = uuid()
       copyOfDrawableCards.push(drawableCards[i])
     }
-    setUuid(uuid + 3)
+
 
     let randomIndex =  Math.floor(Math.random() * (copyOfDrawableCards.length - 0) ) + 0
    
     setChoiceOne(copyOfDrawableCards[randomIndex])
 
-
     copyOfDrawableCards.splice(randomIndex, 1)
     randomIndex = Math.floor(Math.random() * (copyOfDrawableCards.length - 0) ) + 0
-
 
     setChoiceTwo(copyOfDrawableCards[randomIndex])
     copyOfDrawableCards.splice(randomIndex, 1)
@@ -38,16 +36,23 @@ const PostBattleScreen = ({nextEncounter, drawableCards, cardsInHand, setCardsIn
   const addCardToHand = (card) =>{
     if (card === '1') {
       setCardsInHand([...cardsInHand, choiceOne])
-      nextEncounter()
+      setPostBattle(false)
     }
     else if (card === '2') {
       setCardsInHand([...cardsInHand, choiceTwo])
-      nextEncounter()
+      setPostBattle(false)
     }
     else if (card === '3') {
       setCardsInHand([...cardsInHand, choiceThree])
-      nextEncounter()
+      setPostBattle(false)
     }
+    setPathScreen(true)
+
+  }
+
+  const dontAdd = () =>{
+    setPostBattle(false)
+    setPathScreen(true)
   }
 
 
@@ -75,7 +80,7 @@ const PostBattleScreen = ({nextEncounter, drawableCards, cardsInHand, setCardsIn
           <p>{choiceThree.shield}</p>
         </div>
       </div>
-        <button onClick={() => nextEncounter()}>Exit for now</button>
+        <button onClick={() => dontAdd()}>Don't add</button>
     </div>
   )
 }
