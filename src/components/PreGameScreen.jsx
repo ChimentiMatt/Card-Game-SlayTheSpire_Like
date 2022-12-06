@@ -1,7 +1,8 @@
 
-const PreGameScreen = ({setGameStart, startGame}) => {
+const PreGameScreen = ({setGameStart, startGame, setPathScreen}) => {
     const leaveTitleScreen = () => {
         startGame()
+        setPathScreen(true)
         setGameStart(true)
     }
   return (
@@ -12,8 +13,6 @@ const PreGameScreen = ({setGameStart, startGame}) => {
         <button className="text-[3rem] hover:text-green-600" onClick={() => leaveTitleScreen()}>Start Game</button>
       </div>
 
-
-      
     </div>
   )
 }

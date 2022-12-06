@@ -28,30 +28,22 @@ function App() {
   const [gameStart, setGameStart] = useState(false)
   const [postBattle, setPostBattle] = useState(false)
   const [pathScreen, setPathScreen] = useState(false)
+  const [pathNode, setPathNode] = useState([])
 
   const [showDeck, setShowDeck] = useState(false)
   const [showDrawPile, setShowDrawPile] = useState(false)
   
   const [drawableCards, setDrawableCards] = useState([{id: null, str: 5, energy: 1}, {id: null, str: 7, energy: 2}, {id: null, str: 1, energy: 0}])
-  // const drawableCards = [{id: null, str: 5, shield: 0, energy: 1}, {id: null, str: 7, shield: 0, energy: 2}, {id: null, str: 1, shield: 0, energy: 0}]
 
   const [dummyState, setDummyState] = useState(0) 
 
   const [playerObject, setPlayerObject] = useState({health: 20, energy: 30, shield: 10, gold: 0})
   
   const [uuid, setUuid] = useState(100)
-  // const [health, setHealth] = useState(20)
-  // const [energy, setEnergy] = useState(3)
-  // const [shield, setShield] = useState(0)
-
 
   const [discardPile, setDiscardPile] = useState([])
   const [drawPile, setDrawPile] = useState([])
-  const [cardsInHand, setCardsInHand] = useState([
-    // { id: 1, str: 1, def: 2},
-    // { id: 2, str: 2, def: 3},
-    // { id: 3, str: 3, def: 3},
-  ])
+  const [cardsInHand, setCardsInHand] = useState([])
   const [deck, setDeck] = useState([])
 
   const [currentCreatureIndex, setCurrentCreatureIndex] = useState(0)
@@ -60,7 +52,52 @@ function App() {
 
   useEffect(() => {
     // startGame()
+    generatePath()
   }, [])
+
+  const generatePath = () => {
+    // const differentEvents = ['battle', 'event', 'shop']
+
+    let buildArray = [ [], [], [], [], [], [], [] ]
+    for (let i = 0; i < 7; i++){
+      if (i === 0){
+        buildArray[0].push({column: 'l', event: 'battle', level: 1})
+        buildArray[0].push({column: 'm', event: 'battle', level: 1})
+        buildArray[0].push({column: 'r', event: 'battle', level: 1})
+      }
+      else if (i === 1){
+        buildArray[1].push({column: 'l', event: 'battle', level: 2})
+        buildArray[1].push({column: 'm', event: 'event', level: 2})
+        buildArray[1].push({column: 'r', event: 'shop', level: 2})
+      }
+      else if (i === 2){
+        buildArray[2].push({column: 'l', event: 'battle', level: 2})
+        buildArray[2].push({column: 'm', event: 'event', level: 2})
+        buildArray[2].push({column: 'r', event: 'shop', level: 2})
+      }
+      else if (i === 3){
+        buildArray[3].push({column: 'l', event: 'battle', level: 2})
+        buildArray[3].push({column: 'm', event: 'event', level: 2})
+        buildArray[3].push({column: 'r', event: 'shop', level: 2})
+      }
+      else if (i === 4){
+        buildArray[4].push({column: 'l', event: 'battle', level: 2})
+        buildArray[4].push({column: 'm', event: 'event', level: 2})
+        buildArray[4].push({column: 'r', event: 'shop', level: 2})
+      }
+      else if (i === 5){
+        buildArray[5].push({column: 'l', event: 'battle', level: 2})
+        buildArray[5].push({column: 'm', event: 'event', level: 2})
+        buildArray[5].push({column: 'r', event: 'shop', level: 2})
+      }
+      else if (i === 6){
+        buildArray[6].push({column: 'l', event: 'battle', level: 2})
+        buildArray[6].push({column: 'm', event: 'event', level: 2})
+        buildArray[6].push({column: 'r', event: 'shop', level: 2})
+      }
+    }
+    setPathNode(buildArray)
+  }
 
   const endTurn = () => {
 
@@ -230,10 +267,10 @@ function App() {
     <div className="App">
   
 
-      {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame} />}
+      {!gameStart && <PreGameScreen setGameStart={setGameStart} startGame={startGame} setPathScreen={setPathScreen} />}
+      {pathScreen && <PathScreen nextEncounter={nextEncounter} pathNode={pathNode} setPathNode={setPathNode} /> }
       {postBattle && <PostBattleScreen setPathScreen={setPathScreen} setPostBattle={setPostBattle} drawableCards={drawableCards} cardsInHand={cardsInHand} setCardsInHand={setCardsInHand} />}
       <Header playerObject={playerObject} deck={deck} showDeck={showDeck} setShowDeck={setShowDeck}/>
-      {pathScreen && <PathScreen nextEncounter={nextEncounter} /> }
       {gameStart && 
           <div>
 
