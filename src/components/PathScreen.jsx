@@ -11,7 +11,10 @@ const PathScreen = ({nextEncounter, pathNode, setPathNode}) => {
 
   const nextNode = (id) => {
     if (id === 'l-1'){
-      alert('hi')
+      if (pathNode[0][2].event === 'battle'){
+        // alert("battle")
+        nextEncounter()
+      }
     }
     else if (id === 'm-1'){
 

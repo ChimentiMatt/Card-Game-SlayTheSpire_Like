@@ -34,8 +34,9 @@ function App() {
   const [showDrawPile, setShowDrawPile] = useState(false)
   
   const [drawableCards, setDrawableCards] = useState([{id: null, str: 5, energy: 1}, {id: null, str: 7, energy: 2}, {id: null, str: 1, energy: 0}])
+  const [numberDrawn, setNumberDrawn] = useState(0)
 
-  const [dummyState, setDummyState] = useState(0) 
+  // const [dummyState, setDummyState] = useState(0) 
 
   const [playerObject, setPlayerObject] = useState({health: 20, energy: 30, shield: 10, gold: 0})
   
@@ -99,119 +100,7 @@ function App() {
     setPathNode(buildArray)
   }
 
-  const endTurn = () => {
-
-    // take damage
-    setPlayerObject(current => {
-      return {...current, health: playerObject.health + playerObject.shield - creatureObj.dmg}
-    })
-    
-    // regain energy (has a max of 5) 100 for testing
-    if (playerObject.energy + 2 < 100){
-
-      setPlayerObject({health: 20, energy: playerObject.energy + 2, shield: 0, gold: 0})
-    }
-    // else is disabled during testing
-    // else{
-    //   setPlayerObject({health: 20, energy: 5, shield: 0, gold: 0})
-    // }
-      
-    // if draw pile is empty, shuffle 
-    if (notStateDrawPile.length === 0){
-      // alert('shuffle')
-
-      // Since there are no more cards to draw loop over deck
-      // and add card to draw pile checking to see if its already in play.
-      for (let i = 0; i < notStateDeck.length; i++){
-        if (notStateHand.includes(notStateDeck[i])){
-        }
-        else{
-          notStateDrawPile.push(notStateDeck[i])
-        }
-      }
-    
-      setDrawPile(notStateDrawPile)
-      notStateDiscardPile = []
-      setDiscardPile([])
-    }
-    // console.log('deck', deck)
-    // console.log('Not state draw pile', notStateDrawPile)
-
-    // setCards(current => [...current,{ str: 4, def: 3},])
-
-    // if hand has less than 6 cards, draw a card
-    if (notStateHand.length < 6){
-      let index = Math.floor(Math.random() * (notStateDrawPile.length - 0) + 0)
-      let cardToBeDrawn = notStateDrawPile[index]
-      notStateDrawPile.splice(index, 1)
-      // console.log(cardToBeDrawn)
-
-      // setCardsInHand(current => [...current, createCard(),])
-      notStateHand.push(cardToBeDrawn)
-      // console.log(notStateHand)
-
-    }
-
-    // setDummyState(dummyState +1)
-    setCardsInHand(notStateHand)
-
-  }
-
-  const playCard = (card, index) => {
-    // if not enough energy
-    if (card.energy > playerObject.energy){
-      // alert('need more energy')
-    }
-    // if energy check passed
-    else{
-      // change energy and shield
-      setPlayerObject({health: 20, energy: playerObject.energy - card.energy, shield: card.shield, gold: 0})
-
-
-
-      
-      let heroTL = gsap.timeline({repeat: 0});
-      heroTL.to('#hero', {rotate: '50deg', x: '2rem'})
-      heroTL.to('#hero', {rotate: '0deg', x :'0'})
-      
-      let creatureTL = gsap.timeline({repeat: 0});
-      creatureTL.to('#creature', {delay: .4, duration: .1, x: '1rem'})
-      creatureTL.to('#creature', { duration: .1, x: '-1rem'})
-      creatureTL.to('#creature', { duration: .1, x: '1rem'})
-      creatureTL.to('#creature', { duration: .1, x: '-1rem'})
-      
-      let clickCardTl = gsap.timeline({repeat: 0})
-      clickCardTl.to('.cards', {pointerEvents: "none"})
-      clickCardTl.to('.cards', {delay: 1, pointerEvents: "auto"})
-
-      const calcRemainingHP = creatureObj.health - card.str
-
-      setCreatureObj(current => {
-        return {...current, health: calcRemainingHP}
-      })
-      
-      // Remove Card from hand
-      // setCardsInHand(current => 
-      //   current.filter(element => {
-        //     return element.id !== card.id
-        // }))
-        // console.log(notStateHand)
-        notStateHand.splice(index, 1)
-        
-        // Add the card object to Discard Pile array
-        // setDiscardPile([...discardPile,{id:card.id, str: card.str}])
-        notStateDiscardPile.push({id: card.id, str: card.str})
-        
-        setCardsInHand(notStateHand)
-        setDiscardPile(notStateDiscardPile)
-        
-        if (calcRemainingHP <= 0){
-          setPostBattle(true)
-        }
-      }
-  }
-
-
+  
   const startGame = () => {
     for (let i = 0; i < notStateDeck.length; i++){
       notStateDrawPile.push(notStateDeck[i])
@@ -237,10 +126,149 @@ function App() {
     setDeck(notStateDeck)
 
     setCreatureObj(creatureArray[currentCreatureIndex])
-    setCurrentCreatureIndex(currentCreatureIndex +1)
+    // setCurrentCreatureIndex(currentCreatureIndex +1)
+  }
+
+  const endTurn = () => {
+    // Temporarily disable End Turn Btn
+    document.querySelector('#end-turn-btn').disabled = true
+
+    // Animations
+    let creatureTL = gsap.timeline({repeat: 0});
+    creatureTL.to('#creature', {rotate: '-50deg', x: '-2rem'})
+    creatureTL.to('#creature', {rotate: '0deg', x :'0'})
+
+    let heroShakeTL = gsap.timeline({repeat: 0});
+    heroShakeTL.to('#hero', {delay: .4, duration: .1, x: '1rem'})
+    heroShakeTL.to('#hero', { duration: .1, x: '-1rem'})
+    heroShakeTL.to('#hero', { duration: .1, x: '1rem'})
+    heroShakeTL.to('#hero', { duration: .1, x: '-1rem'})
+
+    function delayedEvents(){
+      updatePlayerObject()
+      updatePlayerHands()
+      document.querySelector('#end-turn-btn').disabled = false
+    }
+    setTimeout(delayedEvents, 1000)
+    
+
+    function updatePlayerObject() {
+      // Update player object to take damage ect.
+      const remainingHealth =  playerObject.health - creatureObj.dmg
+      const remainingEnergy = playerObject.energy
+      // regain energy 
+      if (playerObject.energy + 2 < 5){
+        const remainingEnergy = playerObject.energy + 2
+      }
+      
+      setPlayerObject({health: remainingHealth, energy: remainingEnergy, shield: playerObject.shield, gold: playerObject.gold})
+    }  
+    
+    function updatePlayerHands(){
+      // if draw pile is empty, shuffle 
+      if (notStateDrawPile.length === 0){
+  
+        // Since there are no more cards to draw loop over deck
+        // and add card to draw pile checking to see if its already in play.
+        for (let i = 0; i < notStateDeck.length; i++){
+          if (notStateHand.includes(notStateDeck[i])){
+          }
+          else{
+            notStateDrawPile.push(notStateDeck[i])
+          }
+        }
+
+        setDrawPile(notStateDrawPile)
+        notStateDiscardPile = []
+        setDiscardPile([])
+      }
+
+      // if hand has less than 6 cards, draw a card
+      if (notStateHand.length < 6){
+        // draw first card
+        let index = Math.floor(Math.random() * (notStateDrawPile.length - 0) + 0)
+        let cardToBeDrawn = notStateDrawPile[index]
+        notStateDrawPile.splice(index, 1)
+        notStateHand.push(cardToBeDrawn)
+    
+        // draw second card if not over max cards
+        if (notStateHand.length < 6){
+          index = Math.floor(Math.random() * (notStateDrawPile.length - 0) + 0)
+          cardToBeDrawn = notStateDrawPile[index]
+          notStateDrawPile.splice(index, 1)
+          notStateHand.push(cardToBeDrawn)
+          setNumberDrawn(2)
+        }
+        else{
+          setNumberDrawn(1)
+        }
+      }
+      setCardsInHand(notStateHand)
+
+    }
+    
+
+  }
+
+  const [cardInPlay, setCardInPlay] = useState(false)
+
+  const playCard = (card, index) => {
+    // only allow function if animation is over
+    if (!cardInPlay){
+      // alert(cardInPlay)
+      setCardInPlay(true)
+      // if not enough energy
+      if (card.energy > playerObject.energy){
+        // alert('need more energy')
+      }
+      // if energy check passed
+      else{
+        // change energy and shield
+        setPlayerObject({health: 20, energy: playerObject.energy - card.energy, shield: card.shield, gold: 0})
+  
+        let heroTL = gsap.timeline({repeat: 0});
+        heroTL.to('#hero', {rotate: '50deg', x: '2rem'})
+        heroTL.to('#hero', {rotate: '0deg', x :'0'})
+        
+        let creatureTL = gsap.timeline({repeat: 0});
+        creatureTL.to('#creature', {delay: .4, duration: .1, x: '1rem'})
+        creatureTL.to('#creature', { duration: .1, x: '-1rem'})
+        creatureTL.to('#creature', { duration: .1, x: '1rem'})
+        creatureTL.to('#creature', { duration: .1, x: '-1rem'})
+        
+        let clickCardTl = gsap.timeline({repeat: 0})
+        clickCardTl.to('.cards', {pointerEvents: "none"})
+        clickCardTl.to('.cards', {delay: 1, pointerEvents: "auto"})
+  
+        const calcRemainingHP = creatureObj.health - card.str
+  
+        setCreatureObj(current => {
+          return {...current, health: calcRemainingHP}
+        })
+        
+          notStateHand.splice(index, 1)
+          
+          // Add the card object to Discard Pile array
+          notStateDiscardPile.push({id: card.id, str: card.str})
+          
+          setCardsInHand(notStateHand)
+          setDiscardPile(notStateDiscardPile)
+          
+          if (calcRemainingHP <= 0){
+            setPostBattle(true)
+          }
+        }
+      setTimeout(setCardInPlayToFalse, 1500)
+    }
+
+    function setCardInPlayToFalse(){
+      setCardInPlay(false)
+    
+    }
   }
 
   const nextEncounter = () => {
+    console.log(creatureArray[currentCreatureIndex])
     // used to resolve after rounds as a component updates the state hand, but the non state is behind
     notStateHand = []
     for (let i = 0; i < cardsInHand.length; i++){
@@ -250,9 +278,9 @@ function App() {
 
     // setPostBattle(false)
     // nextEncounter(false)
-    setPathScreen(false)
     setCreatureObj(creatureArray[currentCreatureIndex])
     setCurrentCreatureIndex(currentCreatureIndex +1)
+    setPathScreen(false)
   }
 
 
@@ -287,7 +315,7 @@ function App() {
 
           <div id="card-container">
             {cardsInHand.map((card, index) => (
-              <Hand key={index} card={card} cardsInHand={cardsInHand} index={index} playCard={playCard} />
+              <Hand key={index} card={card} cardsInHand={cardsInHand} index={index} playCard={playCard} numberDrawn={numberDrawn}/>
               ))
             }
           </div> 
@@ -299,7 +327,7 @@ function App() {
             
           </div>
           <div className='absolute bottom-[4rem] right-[10rem]'>
-            <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={endTurn}>End Turn</button>
+            <button className='text-[3rem] border-2 rounded p-2 bg-white' onClick={endTurn} id='end-turn-btn'>End Turn</button>
           </div>
         </div>
       }

@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import { useState, useEffect } from 'react'
 
-const Hand = ({card, cardsInHand, index, playCard}) => {
+const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
 
     let rotationArray = [{deg: 0, y: 0}, {deg: 0, y: 0}]
     if (cardsInHand.length === 3) rotationArray = [{deg: -3, y: 10}, {deg: 0, y: 0}, {deg: 3, y: 10}]
@@ -11,21 +11,64 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
 
     useEffect(() => {
         rotateCards()
+        animateCardsBeingAdded()
+
     }, [])
     
     const hoverZoom = (index, onOrOFf, offsetRotate) => {
         // find the offset of rotation so cards can be upright on hover with no rotation
-        let hoverOffset = offsetRotate - offsetRotate
-        // if hover 
-        if (onOrOFf){
-             gsap.to(`#card${index}`, {duration: .0, rotate: '0deg', zoom: 1.75, y: '-7rem', x: '-3rem'})
-             gsap.to(`.outerIndex${index}`, {duration: .0, rotate: `${hoverOffset}deg`})
-            }
-        else {
-            gsap.to(`#card${index}`, {duration: 0, zoom: 1, y: '0rem', x: '0rem'})
-            gsap.to(`.outerIndex${index}`, {duration: 0, rotate: `${offsetRotate}deg`})
-        }
+        // let hoverOffset = offsetRotate - offsetRotate
+        // // if hover 
+        // if (onOrOFf){
+        //      gsap.to(`#card${index}`, {duration: .0, rotate: '0deg', zoom: 1.75, y: '-7rem', x: '-3rem'})
+        //      gsap.to(`.outerIndex${index}`, {duration: .0, rotate: `${hoverOffset}deg`})
+        //     }
+        // else {
+        //     gsap.to(`#card${index}`, {duration: 0, zoom: 1, y: '0rem', x: '0rem'})
+        //     gsap.to(`.outerIndex${index}`, {duration: 0, rotate: `${offsetRotate}deg`})
+        // }
     }   
+
+    const animateCardsBeingAdded = () => {
+ 
+
+        // let cardAnimationTL = gsap.timeline({repeat: 0})
+        // if (cardsInHand.length === 1){
+        //     cardAnimationTL.to('#card0', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+        //     cardAnimationTL.to('#card0', {duration: 1, left: '0vh', y: '0rem'})     
+        //     // targetCardsForAnimate('0')     
+
+        // }
+
+        // if (cardsInHand.length === 2){
+        //     if (numberDrawn === 1){
+        //         cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+        //         cardAnimationTL.to('#card1', {duration: 1, left: '0vh', y: '0rem'})
+        //     }
+        //     else if (numberDrawn === 2){
+        //         cardAnimationTL.to('#card0, #card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+        //         cardAnimationTL.to('#card0, #card1', {duration: 1, left: '0vh', y: '0rem'})
+        //     }
+        //   }
+        // if (cardsInHand.length === 2){
+        // if (numberDrawn === 1){
+        //     cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+        //     cardAnimationTL.to('#card1', {duration: 1, left: '0vh', y: '0rem'})
+        // }
+        // else if (numberDrawn === 2){
+        //     cardAnimationTL.to('#card0, #card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+        //     cardAnimationTL.to('#card0, #card1', {duration: 1, left: '0vh', y: '0rem'})
+        // }
+        // }
+    }
+
+    const targetCardsForAnimate = (id) => {
+        // let cardAnimationTL = gsap.timeline({repeat: 0})
+        // if (cardsInHand.length === 1){
+        //     cardAnimationTL.to(`#card${id}`, {delay: 0, duration:0, left: '40vw', y: '10rem'})
+        //     cardAnimationTL.to(`#card${id}`, {duration: 1, left: '0vh', y: '0rem'})          
+        // }
+    }
 
 
 
@@ -48,7 +91,7 @@ const Hand = ({card, cardsInHand, index, playCard}) => {
 
 
     return (
-    <div className={`handCardOuter outerIndex${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
+    <div id='hand-container' className={`handCardOuter outerIndex${index}`} onClick={() => { playCard(card, index);rotateCards(); }} onMouseEnter={() => hoverZoom(index, true, rotationArray[index].deg)} onMouseLeave={() => hoverZoom(index, false, rotationArray[index].deg)} >
         <div id={`card${index}`} className='cards'>
             {index}
             <p>DMG: {card.str}</p>
