@@ -30,36 +30,84 @@ const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
     }   
 
     const animateCardsBeingAdded = () => {
- 
+        let cardAnimationTL = gsap.timeline({repeat: 0})
 
-        // let cardAnimationTL = gsap.timeline({repeat: 0})
-        // if (cardsInHand.length === 1){
-        //     cardAnimationTL.to('#card0', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-        //     cardAnimationTL.to('#card0', {duration: 1, left: '0vh', y: '0rem'})     
-        //     // targetCardsForAnimate('0')     
+        // if drawing one card from 0
+        if (cardsInHand.length === 1){
+            cardAnimationTL.to('#card0', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card0', {duration: .5, left: '0vh', y: '0rem'})     
+            // targetCardsForAnimate('0')     
+        }
 
-        // }
+        // if drawing to have 2 cards in hand
+        if (cardsInHand.length === 2){
+            // if only drawing the 2nd card
+            if (numberDrawn === 1){
+                cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card1', {duration: .5, left: '0vh', y: '0rem'})
+            }
+            // if drawing both cards
+            else if (numberDrawn === 2){
+                cardAnimationTL.to('#card0, #card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card0, #card1', {duration: .5, left: '0vh', y: '0rem'})
+            }
+          }
 
-        // if (cardsInHand.length === 2){
-        //     if (numberDrawn === 1){
-        //         cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-        //         cardAnimationTL.to('#card1', {duration: 1, left: '0vh', y: '0rem'})
-        //     }
-        //     else if (numberDrawn === 2){
-        //         cardAnimationTL.to('#card0, #card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-        //         cardAnimationTL.to('#card0, #card1', {duration: 1, left: '0vh', y: '0rem'})
-        //     }
-        //   }
-        // if (cardsInHand.length === 2){
-        // if (numberDrawn === 1){
-        //     cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-        //     cardAnimationTL.to('#card1', {duration: 1, left: '0vh', y: '0rem'})
-        // }
-        // else if (numberDrawn === 2){
-        //     cardAnimationTL.to('#card0, #card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-        //     cardAnimationTL.to('#card0, #card1', {duration: 1, left: '0vh', y: '0rem'})
-        // }
-        // }
+        // if drawing to have 3 cards in hand
+        if (cardsInHand.length === 3){
+        // if only drawing the 3nd card
+        if (numberDrawn === 1){
+            cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card1', {duration: .5, left: '0vh', y: '0rem'})
+        }
+        // if drawing both cards
+        else if (numberDrawn === 2){
+            cardAnimationTL.to('#card1, #card2', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card1, #card2', {duration: .5, left: '0vh', y: '0rem'})
+        }
+        }
+
+        // if drawing to have 4 cards in hand
+        if (cardsInHand.length === 4){
+        // if only drawing the 4th card
+        if (numberDrawn === 1){
+            cardAnimationTL.to('#card2', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card2', {duration: .5, left: '0vh', y: '0rem'})
+        }
+        // if drawing both cards
+        else if (numberDrawn === 2){
+            cardAnimationTL.to('#card2, #card3', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card2, #card3', {duration: .5, left: '0vh', y: '0rem'})
+        }
+        }
+
+        // if drawing to have 5 cards in hand
+        if (cardsInHand.length === 5){
+            // if only drawing the 4th card
+            if (numberDrawn === 1){
+                cardAnimationTL.to('#card3', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card3', {duration: .5, left: '0vh', y: '0rem'})
+            }
+            // if drawing both cards
+            else if (numberDrawn === 2){
+                cardAnimationTL.to('#card3, #card4', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card3, #card4', {duration: .5, left: '0vh', y: '0rem'})
+            }
+        }
+        
+        // if drawing to have 6 cards in hand
+        if (cardsInHand.length === 6){
+            // if only drawing the 4th card
+            if (numberDrawn === 1){
+                cardAnimationTL.to('#card4', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card4', {duration: .5, left: '0vh', y: '0rem'})
+            }
+            // if drawing both cards
+            else if (numberDrawn === 2){
+                cardAnimationTL.to('#card4, #card5', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card4, #card5', {duration: .5, left: '0vh', y: '0rem'})
+            }
+        }
     }
 
     const targetCardsForAnimate = (id) => {
