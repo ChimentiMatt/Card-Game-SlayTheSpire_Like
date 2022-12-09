@@ -36,11 +36,8 @@ function App() {
   const [drawableCards, setDrawableCards] = useState([{id: null, str: 5, energy: 1}, {id: null, str: 7, energy: 2}, {id: null, str: 1, energy: 0}])
   const [numberDrawn, setNumberDrawn] = useState(0)
 
-  // const [dummyState, setDummyState] = useState(0) 
-
   const [playerObject, setPlayerObject] = useState({health: 20, energy: 30, shield: 10, gold: 0})
-  
-  const [uuid, setUuid] = useState(100)
+  // const [uuid, setUuid] = useState(100)
 
   const [discardPile, setDiscardPile] = useState([])
   const [drawPile, setDrawPile] = useState([])
@@ -100,7 +97,6 @@ function App() {
     setPathNode(buildArray)
   }
 
-  
   const startGame = () => {
     for (let i = 0; i < notStateDeck.length; i++){
       notStateDrawPile.push(notStateDeck[i])
@@ -151,7 +147,6 @@ function App() {
     }
     setTimeout(delayedEvents, 1000)
     
-
     function updatePlayerObject() {
       // Update player object to take damage ect.
       const remainingHealth =  playerObject.health - creatureObj.dmg
@@ -177,7 +172,6 @@ function App() {
             notStateDrawPile.push(notStateDeck[i])
           }
         }
-
         setDrawPile(notStateDrawPile)
         notStateDiscardPile = []
         setDiscardPile([])
@@ -204,10 +198,7 @@ function App() {
         }
       }
       setCardsInHand(notStateHand)
-
     }
-    
-
   }
 
   const [cardInPlay, setCardInPlay] = useState(false)
