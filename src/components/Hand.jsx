@@ -1,5 +1,5 @@
 import gsap from 'gsap'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
 
@@ -12,7 +12,6 @@ const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
     useEffect(() => {
         rotateCards()
         animateCardsBeingAdded()
-
     }, [])
     
     const hoverZoom = (index, onOrOFf, offsetRotate) => {
