@@ -158,7 +158,7 @@ function App() {
       const remainingEnergy = playerObject.energy
       // regain energy 
       if (playerObject.energy + 2 < 5){
-        const remainingEnergy = playerObject.energy + 2
+        remainingEnergy = playerObject.energy + 2
       }
       
       setPlayerObject({health: remainingHealth, energy: remainingEnergy, shield: playerObject.shield, gold: playerObject.gold})
@@ -219,7 +219,6 @@ function App() {
       setCardInPlay(true)
       // if not enough energy
       if (card.energy > playerObject.energy){
-        // alert('need more energy')
       }
       // if energy check passed
       else{

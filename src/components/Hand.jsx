@@ -57,8 +57,8 @@ const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
         if (cardsInHand.length === 3){
         // if only drawing the 3nd card
         if (numberDrawn === 1){
-            cardAnimationTL.to('#card1', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-            cardAnimationTL.to('#card1', {duration: .5, left: '0vh', y: '0rem'})
+            cardAnimationTL.to('#card2', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card2', {duration: .5, left: '0vh', y: '0rem'})
         }
         // if drawing both cards
         else if (numberDrawn === 2){
@@ -71,8 +71,8 @@ const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
         if (cardsInHand.length === 4){
         // if only drawing the 4th card
         if (numberDrawn === 1){
-            cardAnimationTL.to('#card2', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-            cardAnimationTL.to('#card2', {duration: .5, left: '0vh', y: '0rem'})
+            cardAnimationTL.to('#card3', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+            cardAnimationTL.to('#card3', {duration: .5, left: '0vh', y: '0rem'})
         }
         // if drawing both cards
         else if (numberDrawn === 2){
@@ -85,8 +85,8 @@ const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
         if (cardsInHand.length === 5){
             // if only drawing the 4th card
             if (numberDrawn === 1){
-                cardAnimationTL.to('#card3', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-                cardAnimationTL.to('#card3', {duration: .5, left: '0vh', y: '0rem'})
+                cardAnimationTL.to('#card4', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card4', {duration: .5, left: '0vh', y: '0rem'})
             }
             // if drawing both cards
             else if (numberDrawn === 2){
@@ -99,8 +99,8 @@ const Hand = ({card, cardsInHand, index, playCard, numberDrawn}) => {
         if (cardsInHand.length === 6){
             // if only drawing the 4th card
             if (numberDrawn === 1){
-                cardAnimationTL.to('#card4', {delay: 0, duration:0, left: '40vw', y: '10rem'})
-                cardAnimationTL.to('#card4', {duration: .5, left: '0vh', y: '0rem'})
+                cardAnimationTL.to('#card5', {delay: 0, duration:0, left: '40vw', y: '10rem'})
+                cardAnimationTL.to('#card5', {duration: .5, left: '0vh', y: '0rem'})
             }
             // if drawing both cards
             else if (numberDrawn === 2){
